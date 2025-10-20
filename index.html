@@ -62,6 +62,7 @@ input{
   align-items:flex-start;
   flex-wrap:nowrap;
   gap:10px;
+  page-break-inside: avoid; /* ✅ Không tách chữ ký */
 }
 .sign-card{
   width:49%;
@@ -85,7 +86,7 @@ input{
   -webkit-print-color-adjust: exact;
   print-color-adjust: exact;
   margin-top:10px;
-  margin-bottom:60px; /* ✅ để trống khoảng 10 dòng dưới khung chữ ký */
+  margin-bottom:60px; /* khoảng trống 10 dòng */
 }
 .sig-label{margin-top:6px;font-size:11.5px;}
 .sig-name-strong{font-weight:800;margin-top:4px;font-size:11.5px;}
@@ -137,13 +138,13 @@ input{
     <div id="content-section">Đang tải nội dung...</div>
     <div class="hr"></div>
 
-    <div class="signers">
+    <div class="signers" id="signers-section">
       <div class="sign-card">
         <div class="sign-title">BÊN A – CÔNG TY TNHH HYPER ONE</div>
         <div class="subtitle-muted">Đại diện theo pháp luật</div>
         <div class="role-strong">GIÁM ĐỐC</div>
         <img class="sig-image" src="https://raw.githubusercontent.com/hyperonevn/hyperone-nda-academy-2025/main/luminhtri.jpg" alt="Chữ ký Lữ Minh Trí">
-        <div class="sig-name-strong" style="text-align:center;">LỮ MINH TRÍ</div>
+        <div class="sig-name-strong">LỮ MINH TRÍ</div>
         <div class="sign-caption">(Đã ký và đóng dấu)</div>
       </div>
 
@@ -154,7 +155,7 @@ input{
         <div class="sig-label">Chữ ký:</div>
         <canvas id="padB" class="sign-pad"></canvas>
         <div class="sign-caption">Ký trực tiếp (chuột/cảm ứng)</div>
-        <div class="sig-name-strong" id="stu_sign_name" style="text-align:center;">HỌ TÊN HỌC VIÊN</div>
+        <div class="sig-name-strong" id="stu_sign_name">HỌ TÊN HỌC VIÊN</div>
       </div>
     </div>
 
@@ -165,14 +166,13 @@ input{
   </div>
 </div>
 
-<!-- jsPDF + html2canvas -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 <script>
 // === Load nội dung ===
 fetch("content.html").then(r=>r.text()).then(t=>document.getElementById("content-section").innerHTML=t);
 
-// === Gán ngày hiện tại mặc định ===
+// === Ngày mặc định ===
 const dateInput=document.getElementById('sign_date');
 if(!dateInput.value){
   const now=new Date();
@@ -180,7 +180,7 @@ if(!dateInput.value){
   dateInput.value=`${y}-${m}-${d}`;
 }
 
-// === Đồng bộ họ tên học viên xuống chữ ký ===
+// === Đồng bộ tên học viên ===
 const nameInput=document.getElementById('stu_name');
 const stuSignName=document.getElementById('stu_sign_name');
 function syncName(){
@@ -194,7 +194,7 @@ syncName();
 function makePad(c){
   const ctx=c.getContext('2d');
   let drawing=false,prev=null;
-  const DPR=1.5; // tránh lỗi sọc đen Retina
+  const DPR=1.5;
   function resize(){
     c.width=c.clientWidth*DPR;c.height=c.clientHeight*DPR;
     ctx.setTransform(DPR,0,0,DPR,0,0);
@@ -215,27 +215,35 @@ function makePad(c){
   return {clear:()=>ctx.clearRect(0,0,c.width,c.height)};
 }
 const padB=makePad(document.getElementById('padB'));
-
-// === Xóa chữ ký ===
 document.getElementById('btnClearSign').addEventListener('click',()=>padB.clear());
 
 // === Xuất PDF ===
 document.getElementById('btnExport').addEventListener('click',async()=>{
   const sheet=document.getElementById('nda-sheet');
   const { jsPDF } = window.jspdf;
+
+  // Tính toán vị trí của khung chữ ký
+  const signers=document.getElementById('signers-section');
+  const signersTop=signers.offsetTop;
+  const sheetHeight=sheet.scrollHeight;
+  const ratio=842/sheetHeight; // chiều cao trang A4 (842pt)
+  const pdf=new jsPDF('p','pt','a4');
+  const pageHeight=pdf.internal.pageSize.getHeight();
+
+  // Nếu khung chữ ký nằm quá gần cuối (còn <200px)
+  if(sheetHeight - signersTop < 250){
+    signers.style.pageBreakBefore="always"; // ✅ đẩy sang đầu trang A4 mới
+  }
+
   const canvas=await html2canvas(sheet,{
-    useCORS:true,
-    scale:2,
-    backgroundColor:'#fff',
-    scrollY:0,
-    scrollX:0,
+    useCORS:true,scale:2,backgroundColor:'#fff',
+    scrollY:0,scrollX:0,
     windowWidth:document.documentElement.offsetWidth,
     windowHeight:document.documentElement.scrollHeight
   });
+
   const imgData=canvas.toDataURL('image/jpeg',1.0);
-  const pdf=new jsPDF('p','pt','a4');
   const pageWidth=pdf.internal.pageSize.getWidth();
-  const pageHeight=pdf.internal.pageSize.getHeight();
   const imgWidth=pageWidth;
   const imgHeight=canvas.height*imgWidth/canvas.width;
   let heightLeft=imgHeight;let position=0;
@@ -253,7 +261,6 @@ document.getElementById('btnExport').addEventListener('click',async()=>{
     heightLeft-=pageHeight;
   }
 
-  // ✅ Tên file gồm tên học viên + ngày ký
   const name=(nameInput.value||'HocVien').trim().replace(/\s+/g,'_');
   const date=(dateInput.value||new Date().toISOString().slice(0,10)).replace(/-/g,'');
   pdf.save(`CamKetBaoMat_HYPERONE_${name}_${date}.pdf`);
