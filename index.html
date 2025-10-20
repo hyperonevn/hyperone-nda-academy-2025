@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>NDA – Công ty TNHH HYPER ONE</title>
+<meta name="description" content="Thỏa thuận bảo mật (NDA) cho học viên/khách mời HYPER ONE Academy.">
+<style>
+:root{
+  --ink:#0f172a; --muted:#334155; --line:#e2e8f0;
+  --accent:#2563eb; --bg:#ffffff; --paper:#f8fafc;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--paper);color:var(--ink);
+  font:16px/1.65 "Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+.wrap{display:flex;justify-content:center;padding:20px}
+.sheet{background:var(--bg);border:1px solid var(--line);border-radius:12px;
+  box-shadow:0 8px 30px rgba(2,6,23,.08);padding:28px;width:794px;}
+.header-state{text-align:center;line-height:1.5;margin-bottom:16px}
+.header-state b{display:block;font-size:16px;text-transform:uppercase}
+.header-state span{display:block;font-size:15px;font-weight:500}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:20px}
+.brand{display:flex;align-items:center;gap:12px}
+.logo img{width:72px;height:72px;object-fit:contain;border-radius:8px}
+h1{font-size:20px;margin:0}
+small{color:var(--muted)}
+.actions button{cursor:pointer;border:1px solid var(--line);background:#fff;
+  padding:10px 14px;border-radius:10px}
+.actions .primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.box{border:1px dashed var(--line);border-radius:10px;padding:14px;background:#fff;margin-bottom:16px}
+.label{font-weight:600;color:var(--muted);display:block;margin-top:10px}
+input{width:100%;padding:10px 12px;border:1px solid var(--line);
+  border-radius:10px;background:#fff}
+.course-preview{margin-top:8px;border:1px solid var(--line);
+  border-radius:10px;background:#fff;padding:10px 12px;font-weight:800;text-align:center}
+.hr{height:1px;background:var(--line);margin:22px 0}
+.signers{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:8px}
+.sign-card{border:1px solid var(--line);border-radius:12px;background:#fff;
+  padding:14px;display:flex;flex-direction:column;align-items:center}
+.sign-title{font-weight:700;margin-bottom:4px}
+.subtitle-muted{color:var(--muted);font-size:13.5px;margin-top:2px}
+.role-strong{font-weight:800;font-size:18px;letter-spacing:.02em;margin-top:2px}
+.sig-image{width:220px;max-width:100%;margin:12px 0}
+.sign-pad{border:1px solid var(--line);border-radius:8px;background:#fff;
+  height:180px;width:100%;touch-action:none}
+.sign-caption{font-size:13px;color:var(--muted)}
+.sig-label{margin-top:10px}
+.sig-name-strong{font-weight:800;margin-top:6px}
+.warn{display:none;margin:0 0 12px 0;padding:10px 12px;
+  border:1px solid #fbbf24;background:#fef9c3;border-radius:10px;color:#92400e}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="sheet" id="nda-sheet">
+
+    <div class="header-state">
+      <b>CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</b>
+      <span>Độc lập – Tự do – Hạnh phúc</span>
+      <hr style="width:180px;margin:8px auto;border:0;border-top:1px solid #000">
+    </div>
+
+    <div id="fileWarn" class="warn">
+      ⚠️ Hãy chạy server local để ký & xuất PDF: <code>python3 -m http.server 8080</code>
+    </div>
+
+    <div class="topbar">
+      <div class="brand">
+        <div class="logo"><img src="hyperone-logo.png" alt="Logo HYPER ONE"></div>
+        <div>
+          <h1>THỎA THUẬN CAM KẾT BẢO MẬT (NDA)</h1>
+          <small>Giữa <b>Công ty TNHH HYPER ONE</b> và <b>Học viên/Khách mời HYPER ONE Academy</b></small>
+        </div>
+      </div>
+      <div class="actions">
+        <button id="btnClearSign">Xóa chữ ký</button>
+        <button class="primary" id="btnExport">Lưu PDF (A4)</button>
+      </div>
+    </div>
+
+    <div class="box">
+      <b>THÔNG TIN BÊN A – CÔNG TY TNHH HYPER ONE</b>
+      <p><b>Tên doanh nghiệp:</b> CÔNG TY TNHH HYPER ONE</p>
+      <p><b>MST:</b> 0318921926</p>
+      <p><b>Địa chỉ:</b> 68 Nguyễn Huệ, Quận 1, TP.HCM</p>
+      <p><b>Đại diện:</b> Lữ Minh Trí – <b>Tổng Giám Đốc</b></p>
+    </div>
+
+    <div class="box" id="boxB">
+      <b>THÔNG TIN BÊN B – HỌC VIÊN / KHÁCH MỜI</b>
+      <label class="label">Họ và tên</label>
+      <input id="stu_name" placeholder="Nhập họ tên">
+      <label class="label">Email</label>
+      <input id="stu_email" type="email" placeholder="example@email.com">
+      <label class="label">Số điện thoại</label>
+      <input id="stu_phone" type="tel" placeholder="0xxxxxxxxx">
+      <label class="label">Địa chỉ</label>
+      <input id="stu_addr" placeholder="Địa chỉ liên hệ">
+      <label class="label">Tên khóa học</label>
+      <div id="course_preview" class="course-preview"><b>Practical AI for Working Professionals</b></div>
+      <label class="label">Ngày ký</label>
+      <input id="sign_date" type="date">
+    </div>
+
+    <div class="hr"></div>
+
+    <div id="content-section">Đang tải nội dung...</div>
+
+    <div class="hr"></div>
+
+    <div class="signers">
+      <div class="sign-card">
+        <div class="sign-title">BÊN A – CÔNG TY TNHH HYPER ONE</div>
+        <div class="subtitle-muted">Đại diện theo pháp luật</div>
+        <div class="role-strong">TỔNG GIÁM ĐỐC</div>
+        <img class="sig-image" src="luminhtri.jpg" alt="Chữ ký Lữ Minh Trí">
+        <div class="sig-name-strong">LỮ MINH TRÍ</div>
+        <div class="sign-caption">(Đã ký và đóng dấu)</div>
+      </div>
+
+      <div class="sign-card">
+        <div class="sign-title">BÊN B – HỌC VIÊN / KHÁCH MỜI</div>
+        <div class="subtitle-muted">Người ký</div>
+        <div class="role-strong">HỌC VIÊN</div>
+        <div class="sig-label">Chữ ký: <span id="sig_student_label"></span></div>
+        <canvas id="padB" class="sign-pad" width="400" height="200"></canvas>
+        <div class="sign-caption">Ký trực tiếp (chuột/cảm ứng)</div>
+        <div class="sig-name-strong" id="stu_sign_name">HỌ TÊN HỌC VIÊN</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- jsPDF + html2canvas -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script>
+// === Load nội dung ===
+fetch("content.html")
+  .then(r=>r.text())
+  .then(t=>document.getElementById("content-section").innerHTML=t);
+
+// === Canvas ký ===
+function makePad(c){
+  const ctx=c.getContext('2d');let drawing=false,prev=null;
+  const DPR=window.devicePixelRatio||1;
+  function resize(){const w=c.clientWidth,h=c.clientHeight;
+    c.width=w*DPR;c.height=h*DPR;
+    ctx.setTransform(DPR,0,0,DPR,0,0);
+    ctx.lineWidth=2;ctx.lineCap='round';ctx.strokeStyle='#111827';}
+  resize();window.addEventListener('resize',resize);
+  function pos(e){if(e.touches&&e.touches[0])e=e.touches[0];
+    const r=c.getBoundingClientRect();return{x:e.clientX-r.left,y:e.clientY-r.top};}
+  c.addEventListener('mousedown',e=>{drawing=true;prev=pos(e);});
+  c.addEventListener('mousemove',e=>{if(!drawing)return;const p=pos(e);ctx.beginPath();ctx.moveTo(prev.x,prev.y);ctx.lineTo(p.x,p.y);ctx.stroke();prev=p;});
+  window.addEventListener('mouseup',()=>drawing=false);
+  c.addEventListener('touchstart',e=>{drawing=true;prev=pos(e);e.preventDefault();},{passive:false});
+  c.addEventListener('touchmove',e=>{if(!drawing)return;const p=pos(e);ctx.beginPath();ctx.moveTo(prev.x,prev.y);ctx.lineTo(p.x,p.y);ctx.stroke();prev=p;e.preventDefault();},{passive:false});
+  window.addEventListener('touchend',()=>drawing=false);
+  return {clear:()=>ctx.clearRect(0,0,c.width,c.height)};
+}
+const padB=makePad(document.getElementById('padB'));
+document.getElementById('btnClearSign')?.addEventListener('click',()=>padB.clear());
+
+// === Đồng bộ tên học viên ===
+const nameInput=document.getElementById('stu_name');
+const stuSignName=document.getElementById('stu_sign_name');
+const sigStudentLabel=document.getElementById('sig_student_label');
+function sync(){const raw=nameInput.value||'Họ tên học viên';
+  stuSignName.textContent=raw.toUpperCase();sigStudentLabel.textContent=raw;}
+nameInput.addEventListener('input',sync);sync();
+
+// === Export PDF nhiều trang A4 (sửa fix input bị che) ===
+document.getElementById('btnExport').addEventListener('click',async()=>{
+  const sheet=document.getElementById('nda-sheet');
+  const { jsPDF } = window.jspdf;
+
+  // 1️⃣ Chuyển chữ ký thành ảnh
+  const pad=sheet.querySelector('#padB');
+  const img=document.createElement('img');
+  img.src=pad.toDataURL('image/png');img.style.width='100%';
+  sheet.querySelector('#padB').replaceWith(img);
+
+  // 2️⃣ Chuyển input thành text để html2canvas chụp đầy đủ
+  const inputs = sheet.querySelectorAll('input');
+  const backup = [];
+  inputs.forEach(inp=>{
+    const span=document.createElement('div');
+    span.textContent=inp.value || inp.placeholder || '';
+    span.style.padding='10px 12px';
+    span.style.marginTop='4px';
+    span.style.border='1px solid #e2e8f0';
+    span.style.borderRadius='10px';
+    span.style.background='#f8fafc';
+    span.style.fontWeight='700';
+    inp.parentNode.insertBefore(span, inp);
+    backup.push({inp, span});
+    inp.style.display='none';
+  });
+
+  await new Promise(r=>setTimeout(r,200)); // đợi DOM render ổn định
+
+  // 3️⃣ Chụp canvas
+  const canvas=await html2canvas(sheet,{useCORS:true,backgroundColor:'#ffffff',scale:2,scrollY:0});
+  const imgData=canvas.toDataURL('image/jpeg',1.0);
+
+  // 4️⃣ Xuất ra PDF
+  const pdf=new jsPDF('p','pt','a4');
+  const pageHeight=pdf.internal.pageSize.getHeight();
+  const imgWidth=pdf.internal.pageSize.getWidth();
+  const imgHeight=canvas.height*imgWidth/canvas.width;
+  let heightLeft=imgHeight,position=0;
+  pdf.addImage(imgData,'JPEG',0,position,imgWidth,imgHeight);
+  heightLeft-=pageHeight;
+  while(heightLeft>0){
+    position=heightLeft-imgHeight;
+    pdf.addPage();
+    pdf.addImage(imgData,'JPEG',0,position,imgWidth,imgHeight);
+    heightLeft-=pageHeight;
+  }
+
+  const name=(nameInput.value||'HocVien').trim().replace(/\s+/g,'_');
+  const date=(document.getElementById('sign_date').value||new Date().toISOString().slice(0,10)).replace(/-/g,'');
+  pdf.save(`NDA_HYPERONE_${name}_${date}.pdf`);
+
+  // 5️⃣ Phục hồi input lại
+  backup.forEach(({inp, span})=>{
+    span.remove();
+    inp.style.display='';
+  });
+});
+</script>
+</body>
+</html>
