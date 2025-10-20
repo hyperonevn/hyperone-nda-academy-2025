@@ -108,7 +108,7 @@ input{
       <b>THÔNG TIN BÊN A – CÔNG TY TNHH HYPER ONE</b>
       <p><b>Tên doanh nghiệp:</b> CÔNG TY TNHH HYPER ONE</p>
       <p><b>MST:</b> 0318921926</p>
-      <p><b>Địa chỉ:</b> 68 Nguyễn Huệ, Phường Sài Gòn, TP.HCM</p>
+      <p><b>Địa chỉ:</b> 68 Nguyễn Huệ, Quận 1, TP.HCM</p>
       <p><b>Đại diện:</b> Lữ Minh Trí – <b>Giám Đốc</b></p>
     </div>
 
@@ -150,6 +150,12 @@ input{
         <div class="sig-name-strong" id="stu_sign_name">HỌ TÊN HỌC VIÊN</div>
       </div>
     </div>
+
+    <!-- ✅ Nút xóa và lưu PDF -->
+    <div style="text-align:center;margin-top:16px;">
+      <button id="btnClearSign" style="border:1px solid #e2e8f0;background:#fff;padding:6px 10px;border-radius:6px;font-size:12px;cursor:pointer;">Xóa chữ ký</button>
+      <button id="btnExport" style="border:1px solid #2563eb;background:#2563eb;color:#fff;padding:6px 10px;border-radius:6px;font-size:12px;cursor:pointer;">Lưu PDF</button>
+    </div>
   </div>
 </div>
 
@@ -158,6 +164,18 @@ input{
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 <script>
 fetch("content.html").then(r=>r.text()).then(t=>document.getElementById("content-section").innerHTML=t);
+
+// === Đồng bộ họ tên học viên xuống chữ ký ===
+const nameInput = document.getElementById('stu_name');
+const stuSignName = document.getElementById('stu_sign_name');
+function syncName(){
+  const val = nameInput.value.trim();
+  stuSignName.textContent = val ? val.toUpperCase() : 'HỌ TÊN HỌC VIÊN';
+}
+nameInput.addEventListener('input', syncName);
+syncName();
+
+// === Chức năng ký ===
 function makePad(c){
   const ctx=c.getContext('2d');
   let drawing=false,prev=null;
@@ -171,13 +189,44 @@ function makePad(c){
   function pos(e){if(e.touches&&e.touches[0])e=e.touches[0];
     const r=c.getBoundingClientRect();return{x:e.clientX-r.left,y:e.clientY-r.top};}
   c.addEventListener('mousedown',e=>{drawing=true;prev=pos(e);});
-  c.addEventListener('mousemove',e=>{if(!drawing)return;const p=pos(e);ctx.beginPath();ctx.moveTo(prev.x,prev.y);ctx.lineTo(p.x,p.y);ctx.stroke();prev=p;});
+  c.addEventListener('mousemove',e=>{if(!drawing)return;const p=pos(e);
+    ctx.beginPath();ctx.moveTo(prev.x,prev.y);ctx.lineTo(p.x,p.y);ctx.stroke();prev=p;});
   window.addEventListener('mouseup',()=>drawing=false);
   c.addEventListener('touchstart',e=>{drawing=true;prev=pos(e);e.preventDefault();},{passive:false});
-  c.addEventListener('touchmove',e=>{if(!drawing)return;const p=pos(e);ctx.beginPath();ctx.moveTo(prev.x,prev.y);ctx.lineTo(p.x,p.y);ctx.stroke();prev=p;e.preventDefault();},{passive:false});
+  c.addEventListener('touchmove',e=>{if(!drawing)return;const p=pos(e);
+    ctx.beginPath();ctx.moveTo(prev.x,prev.y);ctx.lineTo(p.x,p.y);ctx.stroke();
+    prev=p;e.preventDefault();},{passive:false});
   window.addEventListener('touchend',()=>drawing=false);
+  return {clear:()=>ctx.clearRect(0,0,c.width,c.height)};
 }
-makePad(document.getElementById('padB'));
+
+const padB = makePad(document.getElementById('padB'));
+
+// === Nút Xóa chữ ký ===
+document.getElementById('btnClearSign').addEventListener('click',()=>padB.clear());
+
+// === Nút Lưu PDF ===
+document.getElementById('btnExport').addEventListener('click',async()=>{
+  const sheet=document.getElementById('nda-sheet');
+  const { jsPDF } = window.jspdf;
+  const canvas=await html2canvas(sheet,{useCORS:true,scale:2,backgroundColor:'#fff'});
+  const imgData=canvas.toDataURL('image/jpeg',1.0);
+  const pdf=new jsPDF('p','pt','a4');
+  const pageWidth=pdf.internal.pageSize.getWidth();
+  const pageHeight=pdf.internal.pageSize.getHeight();
+  const imgWidth=pageWidth;
+  const imgHeight=canvas.height*imgWidth/canvas.width;
+  let heightLeft=imgHeight;let position=0;
+  pdf.addImage(imgData,'JPEG',0,position,imgWidth,imgHeight);
+  heightLeft-=pageHeight;
+  while(heightLeft>0){
+    position=heightLeft-imgHeight;
+    pdf.addPage();
+    pdf.addImage(imgData,'JPEG',0,position,imgWidth,imgHeight);
+    heightLeft-=pageHeight;
+  }
+  pdf.save('CamKetBaoMat_HYPERONE.pdf');
+});
 </script>
 </body>
 </html>
