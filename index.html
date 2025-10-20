@@ -78,7 +78,12 @@ input{
   border:1px solid var(--line);
   border-radius:8px;
   width:100%;height:100px;
-  background:#fff;touch-action:none;
+  background:#fff;
+  touch-action:none;
+  display:block;
+  image-rendering:pixelated;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
 }
 .sig-label{margin-top:6px;font-size:11.5px;}
 .sig-name-strong{font-weight:800;margin-top:4px;font-size:11.5px;}
@@ -188,7 +193,7 @@ syncName();
 function makePad(c){
   const ctx=c.getContext('2d');
   let drawing=false,prev=null;
-  const DPR=window.devicePixelRatio||1;
+  const DPR=1.5; // ✅ cố định để tránh lỗi sọc đen Retina
   function resize(){
     c.width=c.clientWidth*DPR;c.height=c.clientHeight*DPR;
     ctx.setTransform(DPR,0,0,DPR,0,0);
@@ -217,7 +222,15 @@ document.getElementById('btnClearSign').addEventListener('click',()=>padB.clear(
 document.getElementById('btnExport').addEventListener('click',async()=>{
   const sheet=document.getElementById('nda-sheet');
   const { jsPDF } = window.jspdf;
-  const canvas=await html2canvas(sheet,{useCORS:true,scale:2,backgroundColor:'#fff'});
+  const canvas=await html2canvas(sheet,{
+    useCORS:true,
+    scale:2,
+    backgroundColor:'#fff',
+    scrollY:0,
+    scrollX:0,
+    windowWidth:document.documentElement.offsetWidth,
+    windowHeight:document.documentElement.scrollHeight
+  });
   const imgData=canvas.toDataURL('image/jpeg',1.0);
   const pdf=new jsPDF('p','pt','a4');
   const pageWidth=pdf.internal.pageSize.getWidth();
@@ -225,11 +238,16 @@ document.getElementById('btnExport').addEventListener('click',async()=>{
   const imgWidth=pageWidth;
   const imgHeight=canvas.height*imgWidth/canvas.width;
   let heightLeft=imgHeight;let position=0;
+
+  pdf.setFillColor(255,255,255);
+  pdf.rect(0,0,pageWidth,pageHeight,'F'); // ✅ nền trắng tuyệt đối
   pdf.addImage(imgData,'JPEG',0,position,imgWidth,imgHeight);
   heightLeft-=pageHeight;
   while(heightLeft>0){
     position=heightLeft-imgHeight;
     pdf.addPage();
+    pdf.setFillColor(255,255,255);
+    pdf.rect(0,0,pageWidth,pageHeight,'F');
     pdf.addImage(imgData,'JPEG',0,position,imgWidth,imgHeight);
     heightLeft-=pageHeight;
   }
