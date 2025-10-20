@@ -2,128 +2,117 @@
 <html lang="vi">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>NDA – Công ty TNHH HYPER ONE</title>
-<meta name="description" content="Thỏa thuận bảo mật (NDA) cho học viên/khách mời HYPER ONE Academy.">
+<meta name="viewport" content="width=device-width, initial-scale=0.7, maximum-scale=1.0">
+<title>Cam Kết Bảo Mật Thông Tin – HYPER ONE</title>
 <style>
 :root {
   --ink:#0f172a; --muted:#334155; --line:#e2e8f0;
-  --accent:#2563eb; --bg:#ffffff; --paper:#f8fafc;
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{
-  margin:0;padding:0;background:var(--paper);color:var(--ink);
-  font:13px/1.6 "Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  margin:0;padding:0;
+  font:12px/1.65 "Times New Roman",serif;
+  color:var(--ink);background:#fff;
 }
-.wrap{display:flex;justify-content:center;padding:12px}
+.wrap{display:flex;justify-content:center;padding:12px;}
 .sheet{
-  background:var(--bg);border:1px solid var(--line);border-radius:12px;
-  box-shadow:0 4px 18px rgba(2,6,23,0.08);
-  padding:18px;width:100%;max-width:794px;
+  width:100%;max-width:794px;
+  border:1px solid var(--line);
+  padding:28px 40px;
 }
-.header-state{text-align:center;line-height:1.5;margin-bottom:10px}
-.header-state b{display:block;font-size:13px;text-transform:uppercase}
-.header-state span{display:block;font-size:12px;font-weight:500}
-.topbar{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
-.brand{display:flex;align-items:center;gap:10px;flex:1}
-.brand img{width:50px;height:50px;object-fit:contain;border-radius:8px}
-h1{font-size:15px;margin:0;line-height:1.4}
-small{color:var(--muted);font-size:11.5px}
-.actions{display:flex;gap:6px;flex-shrink:0}
-button{
-  cursor:pointer;border:1px solid var(--line);background:#fff;
-  padding:6px 10px;border-radius:6px;font-size:12px
+.header{text-align:center;position:relative;margin-bottom:24px;}
+.header img{
+  position:absolute;top:0;right:0;width:70px;height:70px;object-fit:contain;
 }
-button.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.header b{display:block;font-size:14px;text-transform:uppercase;}
+.header span{display:block;font-size:12px;}
+.header hr{width:180px;margin:5px auto;border:0;border-top:1px solid #000;}
+.title{
+  text-transform:uppercase;
+  font-weight:700;
+  font-size:13.5px;
+  margin-top:6px;
+}
 .box{
-  border:1px dashed var(--line);border-radius:8px;
-  padding:10px;background:#fff;margin-bottom:12px;
+  border:1px dashed var(--line);
+  padding:10px 14px;
+  border-radius:6px;
+  margin-bottom:12px;
 }
-.label{font-weight:600;color:var(--muted);display:block;margin-top:6px;font-size:12.5px}
+.label{font-weight:600;color:var(--muted);margin-top:6px;}
 input{
-  width:100%;padding:6px 8px;border:1px solid var(--line);
-  border-radius:6px;background:#fff;font-size:12.5px;
-}
-.course-preview{
-  margin-top:6px;border:1px solid var(--line);
-  border-radius:6px;background:#fff;padding:6px 8px;
-  font-weight:700;text-align:center;font-size:12.5px;
-}
-.hr{height:1px;background:var(--line);margin:14px 0}
-.signers{
-  display:flex;flex-wrap:wrap;justify-content:space-between;
-  align-items:flex-start;gap:10px;margin-top:6px;
-}
-.sign-card{
-  flex:1 1 48%;
-  border:1px solid var(--line);border-radius:10px;background:#fff;
-  padding:10px;display:flex;flex-direction:column;align-items:center;
-  min-width:280px;
-}
-.sign-title{font-weight:700;margin-bottom:3px;text-align:center;font-size:12.5px}
-.subtitle-muted{color:var(--muted);font-size:11.5px;margin-top:1px;text-align:center}
-.role-strong{font-weight:800;font-size:13px;letter-spacing:.02em;margin-top:2px;text-align:center}
-.sig-image{width:160px;max-width:100%;margin:8px 0}
-.sign-pad{
-  border:1px solid var(--line);border-radius:8px;background:#fff;
-  height:130px;width:100%;touch-action:none;
-}
-.sign-caption{font-size:11px;color:var(--muted);text-align:center}
-.sig-label{margin-top:6px;text-align:center;font-size:11.5px}
-.sig-name-strong{font-weight:800;margin-top:4px;text-align:center;font-size:12px}
-.warn{
-  display:none;padding:8px 10px;border:1px solid #fbbf24;
-  background:#fef9c3;border-radius:8px;color:#92400e;margin-bottom:10px;
+  width:100%;
+  padding:6px 8px;
+  border:1px solid var(--line);
+  border-radius:6px;
   font-size:12px;
 }
-@media (max-width:600px){
-  html,body{font-size:12px}
-  .brand img{width:42px;height:42px}
-  .signers{gap:8px}
-  .sign-card{flex:1 1 48%;min-width:48%}
+.course-preview{
+  border:1px solid var(--line);
+  border-radius:6px;
+  text-align:center;
+  font-weight:700;
+  padding:5px;
+  margin-top:5px;
 }
-@media (max-width:420px){
-  .sign-card{flex:1 1 100%;min-width:100%}
+.hr{height:1px;background:var(--line);margin:18px 0;}
+.signers{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  flex-wrap:nowrap;
+  gap:10px;
+}
+.sign-card{
+  width:49%;
+  border:1px solid var(--line);
+  border-radius:8px;
+  padding:10px;
+  text-align:center;
+}
+.sign-title{font-weight:700;font-size:12.5px;margin-bottom:2px;}
+.subtitle-muted{color:var(--muted);font-size:11.5px;}
+.role-strong{font-weight:800;font-size:12.5px;margin-top:2px;}
+.sig-image{width:150px;margin:8px 0;}
+.sign-pad{
+  border:1px solid var(--line);
+  border-radius:8px;
+  width:100%;height:100px;
+  background:#fff;touch-action:none;
+}
+.sig-label{margin-top:6px;font-size:11.5px;}
+.sig-name-strong{font-weight:800;margin-top:4px;font-size:11.5px;}
+.sign-caption{font-size:11px;color:var(--muted);}
+@media(max-width:420px){
+  .sheet{padding:16px;}
+  .signers{gap:6px;}
+  .sign-card{width:49%;padding:6px;}
+  .sig-image{width:120px;}
+  .sign-pad{height:90px;}
+  html,body{font-size:11px;}
 }
 </style>
 </head>
 <body>
 <div class="wrap">
   <div class="sheet" id="nda-sheet">
-
-    <div class="header-state">
+    <div class="header">
+      <img src="https://raw.githubusercontent.com/hyperonevn/hyperone-nda-academy-2025/main/hyperone-logo.png" alt="Logo HYPER ONE">
       <b>CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</b>
-      <span>Độc lập – Tự do – Hạnh phúc</span>
-      <hr style="width:150px;margin:4px auto;border:0;border-top:1px solid #000">
-    </div>
-
-    <div id="fileWarn" class="warn">
-      ⚠️ Hãy chạy server local để ký & xuất PDF: <code>python3 -m http.server 8080</code>
-    </div>
-
-    <div class="topbar">
-      <div class="brand">
-        <img src="https://raw.githubusercontent.com/hyperonevn/hyperone-nda-academy-2025/main/hyperone-logo.png" alt="Logo HYPER ONE">
-        <div>
-          <h1>THỎA THUẬN CAM KẾT BẢO MẬT (NDA)</h1>
-          <small>Giữa <b>Công ty TNHH HYPER ONE</b> và <b>Học viên/Khách mời HYPER ONE Academy</b></small>
-        </div>
-      </div>
-      <div class="actions">
-        <button id="btnClearSign">Xóa ký</button>
-        <button class="primary" id="btnExport">Lưu PDF</button>
-      </div>
+      <span>Độc lập - Tự do - Hạnh phúc</span>
+      <hr>
+      <div class="title">CAM KẾT BẢO MẬT THÔNG TIN</div>
     </div>
 
     <div class="box">
       <b>THÔNG TIN BÊN A – CÔNG TY TNHH HYPER ONE</b>
       <p><b>Tên doanh nghiệp:</b> CÔNG TY TNHH HYPER ONE</p>
       <p><b>MST:</b> 0318921926</p>
-      <p><b>Địa chỉ:</b> 68 Nguyễn Huệ, Quận 1, TP.HCM</p>
+      <p><b>Địa chỉ:</b> 68 Nguyễn Huệ, Phường Sài Gòn, TP.HCM</p>
       <p><b>Đại diện:</b> Lữ Minh Trí – <b>Giám Đốc</b></p>
     </div>
 
-    <div class="box" id="boxB">
+    <div class="box">
       <b>THÔNG TIN BÊN B – HỌC VIÊN / KHÁCH MỜI</b>
       <label class="label">Họ và tên</label>
       <input id="stu_name" placeholder="Nhập họ tên">
@@ -131,18 +120,14 @@ input{
       <input id="stu_email" type="email" placeholder="example@email.com">
       <label class="label">Số điện thoại</label>
       <input id="stu_phone" type="tel" placeholder="0xxxxxxxxx">
-      <label class="label">Địa chỉ</label>
-      <input id="stu_addr" placeholder="Địa chỉ liên hệ">
       <label class="label">Tên khóa học</label>
-      <div id="course_preview" class="course-preview"><b>Practical AI for Working Professionals</b></div>
+      <div class="course-preview"><b>Practical AI for Working Professionals</b></div>
       <label class="label">Ngày ký</label>
       <input id="sign_date" type="date">
     </div>
 
     <div class="hr"></div>
-
     <div id="content-section">Đang tải nội dung...</div>
-
     <div class="hr"></div>
 
     <div class="signers">
@@ -173,7 +158,6 @@ input{
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 <script>
 fetch("content.html").then(r=>r.text()).then(t=>document.getElementById("content-section").innerHTML=t);
-
 function makePad(c){
   const ctx=c.getContext('2d');
   let drawing=false,prev=null;
@@ -181,7 +165,7 @@ function makePad(c){
   function resize(){
     c.width=c.clientWidth*DPR;c.height=c.clientHeight*DPR;
     ctx.setTransform(DPR,0,0,DPR,0,0);
-    ctx.lineWidth=1.8;ctx.lineCap='round';ctx.strokeStyle='#111827';
+    ctx.lineWidth=1.5;ctx.lineCap='round';ctx.strokeStyle='#111827';
   }
   resize();window.addEventListener('resize',resize);
   function pos(e){if(e.touches&&e.touches[0])e=e.touches[0];
@@ -192,33 +176,8 @@ function makePad(c){
   c.addEventListener('touchstart',e=>{drawing=true;prev=pos(e);e.preventDefault();},{passive:false});
   c.addEventListener('touchmove',e=>{if(!drawing)return;const p=pos(e);ctx.beginPath();ctx.moveTo(prev.x,prev.y);ctx.lineTo(p.x,p.y);ctx.stroke();prev=p;e.preventDefault();},{passive:false});
   window.addEventListener('touchend',()=>drawing=false);
-  return {clear:()=>ctx.clearRect(0,0,c.width,c.height)};
 }
-const padB=makePad(document.getElementById('padB'));
-document.getElementById('btnClearSign')?.addEventListener('click',()=>padB.clear());
-
-document.getElementById('btnExport').addEventListener('click',async()=>{
-  const sheet=document.getElementById('nda-sheet');
-  const { jsPDF } = window.jspdf;
-  const canvas=await html2canvas(sheet,{useCORS:true,scale:2,backgroundColor:'#fff'});
-  const imgData=canvas.toDataURL('image/jpeg',1.0);
-  const pdf=new jsPDF('p','pt','a4');
-  const pageWidth=pdf.internal.pageSize.getWidth();
-  const pageHeight=pdf.internal.pageSize.getHeight();
-  const imgWidth=pageWidth;
-  const imgHeight=canvas.height*imgWidth/canvas.width;
-  let heightLeft=imgHeight;
-  let position=0;
-  pdf.addImage(imgData,'JPEG',0,position,imgWidth,imgHeight);
-  heightLeft-=pageHeight;
-  while(heightLeft>0){
-    position=heightLeft-imgHeight;
-    pdf.addPage();
-    pdf.addImage(imgData,'JPEG',0,position,imgWidth,imgHeight);
-    heightLeft-=pageHeight;
-  }
-  pdf.save('NDA_HYPERONE.pdf');
-});
+makePad(document.getElementById('padB'));
 </script>
 </body>
 </html>
