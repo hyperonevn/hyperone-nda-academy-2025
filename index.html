@@ -84,6 +84,8 @@ input{
   image-rendering:pixelated;
   -webkit-print-color-adjust: exact;
   print-color-adjust: exact;
+  margin-top:10px;
+  margin-bottom:60px; /* ✅ để trống khoảng 10 dòng dưới khung chữ ký */
 }
 .sig-label{margin-top:6px;font-size:11.5px;}
 .sig-name-strong{font-weight:800;margin-top:4px;font-size:11.5px;}
@@ -93,7 +95,7 @@ input{
   .signers{gap:6px;}
   .sign-card{width:49%;padding:6px;}
   .sig-image{width:120px;}
-  .sign-pad{height:90px;}
+  .sign-pad{height:90px;margin-bottom:50px;}
   html,body{font-size:11px;}
 }
 </style>
@@ -156,7 +158,6 @@ input{
       </div>
     </div>
 
-    <!-- ✅ Hai nút rõ ràng, to hơn, tách biệt -->
     <div style="text-align:center;margin-top:24px;">
       <button id="btnClearSign" style="border:1px solid #e2e8f0;background:#fff;padding:10px 20px;border-radius:6px;font-size:13px;cursor:pointer;margin-right:12px;">🧹 Xóa chữ ký</button>
       <button id="btnExport" style="border:1px solid #2563eb;background:#2563eb;color:#fff;padding:10px 20px;border-radius:6px;font-size:13px;cursor:pointer;">💾 Lưu PDF</button>
@@ -193,7 +194,7 @@ syncName();
 function makePad(c){
   const ctx=c.getContext('2d');
   let drawing=false,prev=null;
-  const DPR=1.5; // ✅ cố định để tránh lỗi sọc đen Retina
+  const DPR=1.5; // tránh lỗi sọc đen Retina
   function resize(){
     c.width=c.clientWidth*DPR;c.height=c.clientHeight*DPR;
     ctx.setTransform(DPR,0,0,DPR,0,0);
@@ -240,7 +241,7 @@ document.getElementById('btnExport').addEventListener('click',async()=>{
   let heightLeft=imgHeight;let position=0;
 
   pdf.setFillColor(255,255,255);
-  pdf.rect(0,0,pageWidth,pageHeight,'F'); // ✅ nền trắng tuyệt đối
+  pdf.rect(0,0,pageWidth,pageHeight,'F');
   pdf.addImage(imgData,'JPEG',0,position,imgWidth,imgHeight);
   heightLeft-=pageHeight;
   while(heightLeft>0){
@@ -251,7 +252,11 @@ document.getElementById('btnExport').addEventListener('click',async()=>{
     pdf.addImage(imgData,'JPEG',0,position,imgWidth,imgHeight);
     heightLeft-=pageHeight;
   }
-  pdf.save('CamKetBaoMat_HYPERONE.pdf');
+
+  // ✅ Tên file gồm tên học viên + ngày ký
+  const name=(nameInput.value||'HocVien').trim().replace(/\s+/g,'_');
+  const date=(dateInput.value||new Date().toISOString().slice(0,10)).replace(/-/g,'');
+  pdf.save(`CamKetBaoMat_HYPERONE_${name}_${date}.pdf`);
 });
 </script>
 </body>
