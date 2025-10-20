@@ -108,13 +108,13 @@ input{
       <b>THÔNG TIN BÊN A – CÔNG TY TNHH HYPER ONE</b>
       <p><b>Tên doanh nghiệp:</b> CÔNG TY TNHH HYPER ONE</p>
       <p><b>MST:</b> 0318921926</p>
-      <p><b>Địa chỉ:</b> 68 Nguyễn Huệ, Quận 1, TP.HCM</p>
+      <p><b>Địa chỉ:</b> 68 Nguyễn Huệ, Phường Sài Gòn, TP.HCM.</p>
       <p><b>Đại diện:</b> Lữ Minh Trí – <b>Giám Đốc</b></p>
     </div>
 
     <div class="box">
-      <b>THÔNG TIN BÊN B – HỌC VIÊN / KHÁCH MỜI</b>
-      <label class="label">Họ và tên</label>
+      <b>THÔNG TIN BÊN B – HỌC VIÊN / KHÁCH MỜI</b><br>
+      <label class="label" style="margin-top:8px;">Họ và tên</label>
       <input id="stu_name" placeholder="Nhập họ tên">
       <label class="label">Email</label>
       <input id="stu_email" type="email" placeholder="example@email.com">
@@ -123,7 +123,7 @@ input{
       <label class="label">Tên khóa học</label>
       <div class="course-preview"><b>Practical AI for Working Professionals</b></div>
       <label class="label">Ngày ký</label>
-      <input id="sign_date" type="date">
+      <input id="sign_date" type="date" style="font-weight:bold;">
     </div>
 
     <div class="hr"></div>
@@ -136,7 +136,7 @@ input{
         <div class="subtitle-muted">Đại diện theo pháp luật</div>
         <div class="role-strong">GIÁM ĐỐC</div>
         <img class="sig-image" src="https://raw.githubusercontent.com/hyperonevn/hyperone-nda-academy-2025/main/luminhtri.jpg" alt="Chữ ký Lữ Minh Trí">
-        <div class="sig-name-strong">LỮ MINH TRÍ</div>
+        <div class="sig-name-strong" style="text-align:center;">LỮ MINH TRÍ</div>
         <div class="sign-caption">(Đã ký và đóng dấu)</div>
       </div>
 
@@ -147,14 +147,14 @@ input{
         <div class="sig-label">Chữ ký:</div>
         <canvas id="padB" class="sign-pad"></canvas>
         <div class="sign-caption">Ký trực tiếp (chuột/cảm ứng)</div>
-        <div class="sig-name-strong" id="stu_sign_name">HỌ TÊN HỌC VIÊN</div>
+        <div class="sig-name-strong" id="stu_sign_name" style="text-align:center;">HỌ TÊN HỌC VIÊN</div>
       </div>
     </div>
 
-    <!-- ✅ Nút xóa và lưu PDF -->
-    <div style="text-align:center;margin-top:16px;">
-      <button id="btnClearSign" style="border:1px solid #e2e8f0;background:#fff;padding:6px 10px;border-radius:6px;font-size:12px;cursor:pointer;">Xóa chữ ký</button>
-      <button id="btnExport" style="border:1px solid #2563eb;background:#2563eb;color:#fff;padding:6px 10px;border-radius:6px;font-size:12px;cursor:pointer;">Lưu PDF</button>
+    <!-- ✅ Hai nút rõ ràng, to hơn, tách biệt -->
+    <div style="text-align:center;margin-top:24px;">
+      <button id="btnClearSign" style="border:1px solid #e2e8f0;background:#fff;padding:10px 20px;border-radius:6px;font-size:13px;cursor:pointer;margin-right:12px;">🧹 Xóa chữ ký</button>
+      <button id="btnExport" style="border:1px solid #2563eb;background:#2563eb;color:#fff;padding:10px 20px;border-radius:6px;font-size:13px;cursor:pointer;">💾 Lưu PDF</button>
     </div>
   </div>
 </div>
@@ -163,19 +163,28 @@ input{
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 <script>
+// === Load nội dung ===
 fetch("content.html").then(r=>r.text()).then(t=>document.getElementById("content-section").innerHTML=t);
 
-// === Đồng bộ họ tên học viên xuống chữ ký ===
-const nameInput = document.getElementById('stu_name');
-const stuSignName = document.getElementById('stu_sign_name');
-function syncName(){
-  const val = nameInput.value.trim();
-  stuSignName.textContent = val ? val.toUpperCase() : 'HỌ TÊN HỌC VIÊN';
+// === Gán ngày hiện tại mặc định ===
+const dateInput=document.getElementById('sign_date');
+if(!dateInput.value){
+  const now=new Date();
+  const y=now.getFullYear(),m=String(now.getMonth()+1).padStart(2,'0'),d=String(now.getDate()).padStart(2,'0');
+  dateInput.value=`${y}-${m}-${d}`;
 }
-nameInput.addEventListener('input', syncName);
+
+// === Đồng bộ họ tên học viên xuống chữ ký ===
+const nameInput=document.getElementById('stu_name');
+const stuSignName=document.getElementById('stu_sign_name');
+function syncName(){
+  const val=nameInput.value.trim();
+  stuSignName.textContent=val?val.toUpperCase():'HỌ TÊN HỌC VIÊN';
+}
+nameInput.addEventListener('input',syncName);
 syncName();
 
-// === Chức năng ký ===
+// === Canvas ký ===
 function makePad(c){
   const ctx=c.getContext('2d');
   let drawing=false,prev=null;
@@ -199,13 +208,12 @@ function makePad(c){
   window.addEventListener('touchend',()=>drawing=false);
   return {clear:()=>ctx.clearRect(0,0,c.width,c.height)};
 }
+const padB=makePad(document.getElementById('padB'));
 
-const padB = makePad(document.getElementById('padB'));
-
-// === Nút Xóa chữ ký ===
+// === Xóa chữ ký ===
 document.getElementById('btnClearSign').addEventListener('click',()=>padB.clear());
 
-// === Nút Lưu PDF ===
+// === Xuất PDF ===
 document.getElementById('btnExport').addEventListener('click',async()=>{
   const sheet=document.getElementById('nda-sheet');
   const { jsPDF } = window.jspdf;
